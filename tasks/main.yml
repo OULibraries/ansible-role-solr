@@ -33,6 +33,11 @@
 - include: install.yml
   when: "solr_version.split('.')[0] >= '5'"
 
+- name: Reload systemd so that it knows about Solr.
+  when: (ansible_os_family == 'RedHat')
+  shell:
+    systemctl daemon-reload
+
 - name: Ensure solr is started and enabled on boot.
   service:
     name: "{{ solr_service_name }}"
